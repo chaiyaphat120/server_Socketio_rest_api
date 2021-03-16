@@ -30,11 +30,14 @@ app.use((req, res, next) => {
   return next();
 })
 app.post("/user", async (req,res)=>{
-  req.io.to(req.user_id).emit('booking_request', {"user_Id": req.user_id , "socket_id" :  req.socket_id});
+  // req.io.to(req.user_id).emit('booking_request', {"user_Id": req.user_id , "socket_id" :  req.socket_id});
+  req.io.emit('booking_request', {"user_Id": req.user_id , "socket_id" :  req.socket_id});
   res.json({"user_Id": req.user_id , "socket_id" :  req.socket_id})
 })
 app.use(cors())
 app.use(express.json());
 // app.use(routes);
-
-server.listen(process.env.PORT || 3333);
+const port = process.env.PORT || 3333  
+server.listen( port,()=>{
+  console.log(`server run port ${port}`)
+});
